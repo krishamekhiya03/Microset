@@ -1,0 +1,28 @@
+.slds-modal__container {
+    width: 90% !important;
+    max-width: 90% !important;
+}
+
+/* CLOSE BUTTON FIX */
+.custom-close-btn {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    z-index: 9999;
+
+    /* REMOVE DEFAULT SLDS STYLING */
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+
+    /* ICON COLOR */
+    --slds-c-icon-color-foreground-default: #16325c;
+    --sds-c-icon-color-foreground-default: #16325c;
+}
+
+/* REMOVE WHITE CIRCLE */
+.custom-close-btn button {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}

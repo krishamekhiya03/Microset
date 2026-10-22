@@ -1,0 +1,45 @@
+.file-close-btn {
+
+    position: absolute;
+
+    top: 8px;
+
+    right: 8px;
+
+    z-index: 9999;
+}
+
+.custom-close-btn {
+
+    width: 24px;
+    height: 24px;
+
+    border-radius: 50%;
+
+    background: white;
+
+    color: #0176d3;
+
+    font-size: 16px;
+
+    font-weight: bold;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    cursor: pointer;
+
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+
+    border: 1px solid #d8dde6;
+}
+
+.custom-close-btn:hover {
+
+    background: #f3f3f3;
+
+    color: red;
+}

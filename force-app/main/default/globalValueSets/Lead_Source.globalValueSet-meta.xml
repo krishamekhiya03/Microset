@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>IndiaMART</fullName>
+        <default>false</default>
+        <label>IndiaMART</label>
+    </customValue>
+    <customValue>
+        <fullName>TradeIndia - My Inquiry</fullName>
+        <default>false</default>
+        <label>TradeIndia - My Inquiry</label>
+    </customValue>
+    <customValue>
+        <fullName>TradeIndia - Buy Lead</fullName>
+        <default>false</default>
+        <label>TradeIndia - Buy Lead</label>
+    </customValue>
+    <customValue>
+        <fullName>Website - Microsetindia.com</fullName>
+        <default>false</default>
+        <label>Website - Microsetindia.com</label>
+    </customValue>
+    <customValue>
+        <fullName>Website - Microset.co.in</fullName>
+        <default>false</default>
+        <label>Website - Microset.co.in</label>
+    </customValue>
+    <customValue>
+        <fullName>Email</fullName>
+        <default>false</default>
+        <label>Email</label>
+    </customValue>
+    <customValue>
+        <fullName>Telephone</fullName>
+        <default>false</default>
+        <label>Telephone</label>
+    </customValue>
+    <customValue>
+        <fullName>WhatsApp</fullName>
+        <default>false</default>
+        <label>WhatsApp</label>
+    </customValue>
+    <customValue>
+        <fullName>Visit</fullName>
+        <default>false</default>
+        <label>Visit</label>
+    </customValue>
+    <customValue>
+        <fullName>Other</fullName>
+        <default>false</default>
+        <label>Other</label>
+    </customValue>
+    <customValue>
+        <fullName>Exhibition</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>Exhibition</label>
+    </customValue>
+    <customValue>
+        <fullName>Referrals</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>Referrals</label>
+    </customValue>
+    <customValue>
+        <fullName>Existing Customers</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>Existing Customers</label>
+    </customValue>
+    <customValue>
+        <fullName>OEM Customers</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>OEM Customers</label>
+    </customValue>
+    <customValue>
+        <fullName>Campaign</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>Campaign</label>
+    </customValue>
+    <masterLabel>Lead Source</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

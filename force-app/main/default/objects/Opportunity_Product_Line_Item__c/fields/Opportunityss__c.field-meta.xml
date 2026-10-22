@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Opportunityss__c</fullName>
+    <label>Opportunity</label>
+    <referenceTo>Opportunity_Custom__c</referenceTo>
+    <relationshipLabel>Opportunity Product Line Item</relationshipLabel>
+    <relationshipName>Opportunity_Product_Line_Item</relationshipName>
+    <relationshipOrder>0</relationshipOrder>
+    <reparentableMasterDetail>false</reparentableMasterDetail>
+    <trackTrending>false</trackTrending>
+    <type>MasterDetail</type>
+    <writeRequiresMasterRead>false</writeRequiresMasterRead>
+</CustomField>

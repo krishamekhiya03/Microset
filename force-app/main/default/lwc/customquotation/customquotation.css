@@ -1,0 +1,809 @@
+/* ═══════════════════════════════════════════════════
+   CustomQuotation LWC — Component Styles
+   Updated with VF iframe preview and removed HTML to PDF styles
+═══════════════════════════════════════════════════ */
+
+:host { display: block; font-family: 'Salesforce Sans', Arial, sans-serif; background: #f2f2f2; }
+.qt-shell {
+    position: relative;
+}
+
+/* ── TOOLBAR ────────────────────────────────────── */
+/* .qt-toolbar {
+    display: flex; align-items: center; justify-content: space-between;
+    background: #0f3b5e; color: #fff;
+    padding: 10px 20px; border-radius: 8px 8px 0 0;
+} */
+ .qt-toolbar {
+    display: flex; align-items: center; justify-content: space-between;
+    background: #0f3b5e; color: #fff;
+    padding: 10px 20px; border-radius: 8px 8px 0 0;
+    position: sticky;
+    top: 0;
+    z-index: 200;
+}
+.qt-toolbar-brand { display: flex; align-items: center; gap: 10px; }
+.qt-toolbar-icon  { font-size: 1.2rem; }
+.qt-toolbar-title { font-size: 1.05rem; font-weight: 700; }
+.qt-toolbar-badge {
+    background: rgba(255,255,255,0.18); border-radius: 12px;
+    font-size: 0.72rem; padding: 2px 10px; font-weight: 600;
+}
+.qt-toolbar-actions { display: flex; align-items: center; gap: 10px; }
+
+.qt-mode-pills { display: flex; border: 1px solid rgba(255,255,255,0.35); border-radius: 6px; overflow: hidden; }
+.qt-pill {
+    background: transparent; color: rgba(255,255,255,0.7);
+    border: none; padding: 5px 16px; cursor: pointer; font-size: 0.82rem; transition: all 0.2s;
+}
+.qt-pill:hover { background: rgba(255,255,255,0.12); color: #fff; }
+.qt-pill-active { background: rgba(255,255,255,0.22); color: #fff; font-weight: 700; }
+
+.qt-btn {
+    padding: 6px 16px; border-radius: 5px; font-size: 0.84rem;
+    font-weight: 600; cursor: pointer; transition: all 0.2s; border: none;
+}
+.qt-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+/* .qt-btn-outline {
+    background: transparent; border: 1px solid rgba(255,255,255,0.55); color: #fff;
+} */
+.qt-btn-outline:hover:not(:disabled) { background: rgba(255,255,255,0.12); }
+.qt-btn-primary { background: #22a5e0; color: #fff; }
+.qt-btn-primary:hover:not(:disabled) { background: #1a8fc6; }
+.qt-btn-success { background: #1e7e34; color: #fff; }
+.qt-btn-success:hover:not(:disabled) { background: #165c26; }
+/* .qt-btn-outline-dark {
+    background: #f4f6f9; border: 3px solid #ccc; color: #333;
+    padding: 6px 16px; border-radius: 5px; font-size: 0.84rem;
+    font-weight: 600; cursor: pointer; transition: all 0.2s;
+    
+
+} */
+.qt-btn-outline-dark {
+    background: #fff;
+    border: 1px solid #c9c9c9;
+    color: #444;
+
+    padding: 6px 16px;
+    border-radius: 6px;
+
+    font-size: 0.84rem;
+    font-weight: 600;
+
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.qt-btn-outline-dark:hover {
+    background: #f5f7fa;
+    border-color: #0f3b5e;
+    color: #0f3b5e;
+}
+
+.qt-btn-outline-dark:hover { background: #e8ecf0; }
+.qt-btn-pdf {
+    background: #c0392b; color: #fff; padding: 8px 20px;
+    border-radius: 5px; font-size: 0.84rem; font-weight: 700;
+    cursor: pointer; border: none; transition: all 0.2s;
+}
+.qt-btn-pdf:hover { background: #a93226; }
+
+/* ── EDIT LAYOUT ────────────────────────────────── */
+.qt-edit-layout {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+    padding: 14px; align-items: start;
+}
+
+/* ── CARDS ──────────────────────────────────────── */
+.qt-card {
+    background: #fff; border-radius: 7px;
+    border: 1px solid #e0e0e0; box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+    overflow: hidden; margin-bottom: 14px;
+}
+.qt-summary-card { margin-bottom: 0; }
+.qt-card-hd {
+    display: flex; align-items: center; gap: 7px;
+    background: #f0f4f9; border-bottom: 1px solid #e0e0e0;
+    padding: 9px 14px; font-weight: 700; font-size: 0.83rem; color: #0f3b5e;
+}
+.qt-card-hd-icon { font-size: 1rem; }
+.qt-card-bd { padding: 14px; }
+
+.qt-add-item-btn {
+    margin-left: auto; background: #0f3b5e; color: #fff;
+    border: none; border-radius: 5px; padding: 5px 16px;
+    font-size: 0.78rem; font-weight: 700; cursor: pointer;
+}
+.qt-add-item-btn:hover { background: #1a5c8f; }
+
+/* ── FORM FIELDS ────────────────────────────────── */
+.qt-field { display: flex; flex-direction: column; gap: 3px; }
+.qt-field label {
+    font-size: 0.72rem; font-weight: 700; color: #555;
+    text-transform: uppercase; letter-spacing: 0.03em;
+}
+.qt-field input, .qt-field select, .qt-field textarea {
+    border: 1px solid #d8d8d8; border-radius: 4px;
+    padding: 6px 9px; font-size: 0.83rem; color: #333;
+    background: #fff; transition: border-color 0.2s;
+    font-family: inherit; resize: vertical;
+}
+.qt-field input:focus, .qt-field select:focus, .qt-field textarea:focus {
+    outline: none; border-color: #0f3b5e; box-shadow: 0 0 0 2px rgba(15,59,94,0.1);
+}
+.qt-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.qt-grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap: 10px; }
+.qt-grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px,1fr)); gap: 10px; }
+.qt-grid-5 { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px,1fr)); gap: 8px; }
+.qt-span2  { grid-column: span 2; }
+
+.qt-field lightning-input-rich-text {
+    --slds-c-textarea-sizing-min-height: 100px;
+    max-height: 150px; overflow-y: auto;
+}
+
+/* ── ITEMS SUMMARY TABLE (in edit mode card) ────── */
+.qt-items-summary-tbl {
+    width: 100%; border-collapse: collapse; font-size: 0.78rem;
+}
+.qt-items-summary-tbl th {
+    background: #f0f4f9; color: #0f3b5e; font-size: 0.68rem;
+    font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em;
+    padding: 7px 8px; border-bottom: 2px solid #e0e0e0; text-align: left;
+}
+.qt-items-summary-tbl td { padding: 8px; border-bottom: 1px solid #f0f0f0; }
+.sum-item-row:hover { background: #f8fbff; }
+.sum-item-hl { background: #fffbec !important; border-left: 3px solid #f4a100; }
+.sum-prod-name { font-weight: 700; color: #0f3b5e; }
+.sum-hsn { font-size: 0.68rem; color: #22a5e0; margin-top: 2px; }
+.sum-total { font-weight: 700; color: #0f3b5e; }
+.sum-edit-btn {
+    background: #e8f3fd; border: 1px solid #c5dff0; border-radius: 4px;
+    cursor: pointer; padding: 3px 8px; font-size: 0.75rem; color: #0f3b5e;
+    transition: all 0.15s;
+}
+.sum-edit-btn:hover { background: #0f3b5e; color: #fff; }
+
+/* computed fields */
+.qt-computed {
+    background: #f6f8fa; border: 1px solid #e0e0e0; border-radius: 4px;
+    padding: 5px 7px; display: flex; flex-direction: column; justify-content: center;
+    min-height: 48px;
+}
+.qt-computed-hl { background: #e8f3fd; border-color: #0f3b5e; }
+.qt-comp-label  { font-size: 0.62rem; color: #888; font-weight: 700; text-transform: uppercase; }
+.qt-comp-val    { font-size: 0.78rem; font-weight: 700; color: #333; }
+.qt-comp-total  { color: #0f3b5e; font-size: 0.86rem; }
+
+.qt-empty-items { padding: 36px; text-align: center; color: #aaa; font-size: 0.85rem; }
+
+/* summary table in edit mode */
+.qt-summary-tbl { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+.qt-summary-tbl td { padding: 5px 8px; border-bottom: 1px solid #f0f0f0; }
+.qt-summary-tbl td:last-child { text-align: right; font-weight: 600; }
+.qt-grand-row { background: #0f3b5e; color: #fff; font-weight: 800; font-size: 0.9rem; }
+.qt-grand-row td { color: #fff; border: none; }
+
+.qt-line-items-body { max-height: 400px; overflow-y: auto; }
+
+/* ══════════════════════════════════════════════════
+   ★ PREVIEW MODE WITH VF IFRAME
+══════════════════════════════════════════════════ */
+.qt-preview-shell {
+    padding: 20px; background: #eaeaea; min-height: 600px;
+    display: flex; flex-direction: column;
+}
+
+.qt-vf-iframe {
+    width: 100%; height: 100vh; border: none; border-radius: 4px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+}
+
+.qt-loading-preview {
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    min-height: 600px; gap: 20px;
+}
+
+.qt-spinner {
+    width: 50px; height: 50px;
+    border: 4px solid rgba(15,59,94,0.1);
+    border-top-color: #0f3b5e;
+    border-radius: 50%;
+    animation: qtSpin 1s linear infinite;
+}
+
+@keyframes qtSpin {
+    to { transform: rotate(360deg); }
+}
+
+.qt-loading-preview p {
+    font-size: 1rem; color: #666; font-weight: 600;
+}
+
+/* ══════════════════════════════════════════════════
+   ★ ITEMS POPUP MODAL STYLES
+══════════════════════════════════════════════════ */
+.qt-items-modal {
+    width: 760px;
+    max-width: 96vw;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Modal header */
+.qt-modal-hd {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 18px; background: #0f3b5e; color: #fff;
+    font-weight: 700; font-size: 0.9rem; flex-shrink: 0;
+}
+.qt-modal-hd-left  { display: flex; align-items: center; gap: 8px; }
+.qt-modal-hd-right { display: flex; align-items: center; gap: 10px; }
+.qt-modal-hd-icon  { font-size: 1.1rem; }
+.qt-items-count-badge {
+    background: rgba(255,255,255,0.2); border-radius: 12px;
+    font-size: 0.7rem; padding: 2px 8px; font-weight: 600;
+}
+.qt-modal-add-btn {
+    background: #22a5e0; color: #fff; border: none; border-radius: 5px;
+    padding: 5px 14px; font-size: 0.78rem; font-weight: 700; cursor: pointer;
+}
+.qt-modal-add-btn:hover { background: #1a8fc6; }
+.qt-modal-close {
+    background: none; border: none; color: #fff; font-size: 1.1rem; cursor: pointer; padding: 0 4px;
+}
+
+/* ── Stats bar (list view) ──────────────────────── */
+.qt-popup-stats {
+    display: flex; align-items: center; background: #f8fafc;
+    border: 1px solid #e8ecf0; border-radius: 8px; padding: 12px 20px;
+    margin-bottom: 16px; gap: 0;
+}
+.qt-stat-box { flex: 1; text-align: center; }
+.qt-stat-num { display: block; font-size: 1.1rem; font-weight: 800; color: #0f3b5e; }
+.qt-stat-lbl { display: block; font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.05em; color: #888; margin-top: 2px; }
+.qt-stat-divider { width: 1px; background: #ddd; height: 36px; margin: 0 10px; }
+
+/* ── Popup items list cards ─────────────────────── */
+.qt-items-list-bd {
+    flex: 1; overflow-y: auto; padding: 16px 18px;
+}
+.qt-popup-items-list { display: flex; flex-direction: column; gap: 10px; }
+
+/* .pli-card {
+    display: flex; align-items: stretch; gap: 0;
+    border: 1px solid #e0e8f0; border-radius: 8px;
+    background: #fff; overflow: hidden;
+    transition: box-shadow 0.2s, border-color 0.2s;
+    position: relative;
+} */
+ 
+ .pli-card {
+    display: flex;
+    align-items: stretch;
+
+    border: 1px solid #e0e8f0;
+    border-radius: 10px;
+
+    background: #fff;
+    overflow: hidden;
+
+    transition: all 0.2s ease;
+
+    position: relative;
+}
+.pli-card:hover { box-shadow: 0 3px 12px rgba(15,59,94,0.12); border-color: #c5dff0; }
+.pli-card-hl    { border-left: 4px solid #f4a100; background: #fffbec; }
+
+.pli-left {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 6px; padding: 12px 10px;
+    background: #f0f4f9; border-right: 1px solid #e0e0e0;
+    min-width: 64px;
+}
+.pli-num { font-weight: 800; font-size: 0.72rem; color: #0f3b5e; }
+.pli-img { width: 44px; height: 44px; object-fit: cover; border-radius: 4px; border: 1px solid #ddd; }
+.pli-img-ph { width: 44px; height: 44px; background: #e8eef5; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; }
+
+.pli-mid { flex: 1; padding: 12px 14px; display: flex; flex-direction: column; justify-content: center; gap: 4px; }
+.pli-name { font-weight: 700; color: #0f3b5e; font-size: 0.88rem; }
+.pli-hsn  { font-size: 0.7rem; color: #22a5e0; font-weight: 700; }
+.pli-meta { font-size: 0.72rem; color: #777; display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+.pli-dot  { color: #ccc; }
+
+.pli-right {
+    display: flex; flex-direction: column; align-items: flex-end;
+    justify-content: center; padding: 12px 14px; gap: 4px;
+    border-left: 1px solid #eee; min-width: 140px;
+}
+.pli-price  { font-weight: 700; color: #333; font-size: 0.84rem; }
+.pli-total  { font-size: 0.7rem; color: #888; }
+.pli-actions { display: flex; gap: 6px; margin-top: 4px; }
+.pli-edit-btn {
+    background: #0f3b5e; color: #fff; border: none; border-radius: 4px;
+    padding: 4px 10px; font-size: 0.72rem; font-weight: 700; cursor: pointer;
+}
+.pli-edit-btn:hover { background: #1a5c8f; }
+.pli-del-btn {
+    background: #ffe0e0; color: #c00; border: 1px solid #fbb; border-radius: 4px;
+    padding: 4px 8px; font-size: 0.75rem; cursor: pointer;
+}
+.pli-del-btn:hover { background: #fcc; }
+
+.pli-hl-strip {
+    position: absolute; top: 8px; right: 8px;
+    font-size: 0.85rem;
+}
+
+/* CHECKBOX COLUMN */
+.item-highlight-chk {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+
+    padding: 18px 10px 0 12px;
+
+    border-right: 1px solid #e8e8e8;
+    background: #fafbfd;
+
+    min-width: 42px;
+}
+
+/* REMOVE EXTRA SPACE */
+.item-highlight-chk lightning-input {
+    margin: 0;
+    padding: 0;
+}
+
+/* BETTER CHECKBOX LOOK */
+.item-highlight-chk .slds-checkbox_faux {
+    border-radius: 4px;
+    border: 1.5px solid #b0bcc8;
+}
+
+/* HOVER EFFECT */
+.pli-card:hover .item-highlight-chk {
+    background: #f3f7fb;
+}
+
+/* ── Item edit view ─────────────────────────────── */
+.qt-item-edit-bd {
+    flex: 1; overflow-y: auto; padding: 16px 18px;
+}
+
+/* Edit nav header */
+.qt-edit-nav {
+    display: flex; align-items: center; justify-content: space-between;
+    background: #f0f4f9; border: 1px solid #dde4ed; border-radius: 7px;
+    padding: 10px 14px; margin-bottom: 14px;
+}
+.qt-edit-nav-info  { display: flex; align-items: center; gap: 8px; }
+.qt-edit-nav-icon  { font-size: 1rem; }
+.qt-edit-nav-title { font-weight: 700; color: #0f3b5e; font-size: 0.88rem; }
+.qt-edit-nav-sub   { font-size: 0.72rem; color: #888; }
+.qt-edit-nav-dots  { display: flex; gap: 5px; align-items: center; }
+.nav-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: #c5d5e0; transition: all 0.2s;
+}
+.nav-dot-active { background: #0f3b5e; transform: scale(1.3); }
+
+/* Highlight toggle */
+.qt-hl-toggle-row { margin-bottom: 12px; }
+.qt-hl-toggle {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 0.82rem; color: #555; cursor: pointer; font-weight: 600;
+}
+.qt-hl-toggle input { cursor: pointer; }
+
+/* Modal body */
+.qt-modal-bd {
+    padding: 18px; display: flex; flex-direction: column; gap: 12px;
+    max-height: 65vh; overflow-y: auto;
+}
+
+/* Modal footer */
+.qt-modal-ft {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 12px 18px; border-top: 1px solid #eee;
+    background: #f8f9fb; flex-shrink: 0;
+}
+.qt-edit-footer { gap: 10px; }
+.qt-modal-ft-right { display: flex; gap: 8px; align-items: center; }
+.qt-modal-ft .qt-btn-outline { background: #f0f0f0; border: 1px solid #ccc; color: #333; }
+
+/* ─────────────────────────────────────────────── */
+.qt-modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 1000; }
+.qt-modal {
+    position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%);
+    background: #fff; border-radius: 10px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.25); z-index: 1001; overflow: hidden;
+    display: flex; flex-direction: column;
+}
+
+/* ── TOAST ──────────────────────────────────────── */
+.qt-toast {
+    position: fixed; bottom: 24px; right: 24px;
+    display: flex; align-items: center; gap: 10px;
+    padding: 12px 20px; border-radius: 6px; font-size: 0.84rem;
+    font-weight: 600; z-index: 9999;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.18); animation: qtSlide 0.3s ease;
+    max-width: 400px;
+}
+.qt-toast-ok   { background: #1e7e34; color: #fff; }
+.qt-toast-err  { background: #c0392b; color: #fff; }
+.qt-toast-info { background: #0f3b5e; color: #fff; }
+.qt-toast-ico  { font-size: 1rem; flex-shrink: 0; }
+.qt-toast-msg  { flex: 1; }
+
+/* .qt-footer-actions {
+    position: sticky;
+    bottom: 0;
+    background: #fff;
+    padding: 12px 20px;
+    border-top: 1px solid #ddd;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    z-index: 100;
+} */
+.qt-footer-actions {
+    position: sticky;
+    bottom: 0;
+    background: #fff;
+    padding: 12px 20px;
+    border-top: 1px solid #ddd;
+    box-shadow: 0 -2px 8px rgba(0,0,0,0.08);
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    z-index: 150;
+}
+@keyframes qtSlide { from { transform: translateX(120px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+/* ── RESPONSIVE ─────────────────────────────────── */
+@media (max-width: 1100px) {
+    .qt-edit-layout { grid-template-columns: 1fr 1.3fr; }
+    .qt-grid-5 { grid-template-columns: 1fr 1fr 1fr; }
+}
+@media (max-width: 700px) {
+    .qt-grid-2, .qt-grid-3, .qt-grid-4 { grid-template-columns: 1fr; }
+    .qt-span2 { grid-column: span 1; }
+    .qt-toolbar { flex-direction: column; gap: 10px; }
+    .qt-items-modal { width: 96vw; }
+    .pli-right { min-width: 110px; }
+    .qt-vf-iframe { height: 80vh; }
+}
+
+@media print {
+    .qt-toolbar { display: none; }
+    .qt-preview-shell { background: #fff; padding: 0; }
+}
+
+/* ── EMAIL MODAL ────────────────────────────────── */
+.qt-email-modal {
+    width: 700px;
+    max-width: 95vw;
+}
+.qt-full-width {
+    grid-column: 1 / -1;
+}
+
+.qt-terms-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.82rem;
+}
+
+.qt-terms-table td {
+    padding: 10px;
+    vertical-align: top;
+    border-bottom: 1px solid #eee;
+}
+
+/* LEFT LABEL */
+.qt-term-label {
+    width: 25%;
+    font-weight: 700;
+    color: #333;
+}
+
+/* RIGHT VALUE (MAIN FIX) */
+.qt-term-value {
+    width: 75%;
+    text-align: justify;        /* ✅ justify text */
+    line-height: 1.6;
+    white-space: pre-line;      /* ✅ keep line breaks */
+    color: #444;
+}
+.qt-term-input {
+    width: 100%;
+    border: 1px solid #d8d8d8;
+    border-radius: 4px;
+    padding: 6px 8px;
+    font-size: 0.82rem;
+    resize: vertical;
+    min-height: 38px;
+}
+
+.qt-large {
+    min-height: 80px;
+}
+
+/* ══════════════════════════════════════════════════════
+   ★ GROUP STYLES (added for Quote Line Group feature)
+══════════════════════════════════════════════════════ */
+
+/* Card header actions wrapper — allows multiple buttons right-aligned */
+.qt-card-hd-actions {
+    display: flex; align-items: center; gap: 8px; margin-left: auto;
+}
+
+/* ★ Add Group button in card header */
+.qt-add-group-btn {
+    background: #1f4e79; color: #fff;
+    border: none; border-radius: 5px; padding: 5px 14px;
+    font-size: 0.78rem; font-weight: 600; cursor: pointer;
+    white-space: nowrap; transition: background 0.2s;
+}
+.qt-add-group-btn:hover { background: #163a5a; }
+
+/* ★ Group section wrapper */
+.qt-group-section {
+    margin-bottom: 14px;
+    border: 1px solid #d0dde8;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+/* ★ Ungrouped section has a lighter style */
+.qt-group-section--ungrouped {
+    border-color: #e0e0e0;
+}
+
+/* ★ Group header row */
+.qt-group-header {
+    display: flex; align-items: center; gap: 8px;
+    background: #1f4e79; color: #fff;
+    padding: 7px 12px; font-size: 0.82rem; font-weight: 700;
+}
+
+/* ★ Ungrouped header is subtler */
+.qt-group-header--ungrouped {
+    background: #7f8c8d; color: #fff;
+}
+
+.qt-group-header-icon { font-size: 0.95rem; }
+.qt-group-header-name { flex: 1; }
+
+/* ★ Group header action buttons */
+.qt-group-header-actions {
+    display: flex; align-items: center; gap: 6px; margin-left: auto;
+}
+.qt-group-add-item-btn,
+.qt-group-edit-btn,
+.qt-group-del-btn {
+    background: rgba(255,255,255,0.18); color: #fff;
+    border: 1px solid rgba(255,255,255,0.35);
+    border-radius: 4px; padding: 3px 10px;
+    font-size: 0.75rem; cursor: pointer; transition: background 0.2s;
+}
+.qt-group-add-item-btn:hover { background: rgba(255,255,255,0.3); }
+.qt-group-edit-btn:hover     { background: rgba(255,255,255,0.3); }
+.qt-group-del-btn:hover      { background: rgba(220,50,50,0.55); }
+
+/* ★ Empty group placeholder */
+.qt-group-empty {
+    padding: 10px 14px; font-size: 0.8rem;
+    color: #999; font-style: italic;
+}
+
+/* ★ Indented table inside a group */
+.qt-items-summary-tbl--indented {
+    border-top: 1px solid #d0dde8;
+}
+
+/* ★ Group modal — small, centered */
+.qt-group-modal {
+    width: 420px;
+    max-width: 95vw;
+}
+
+/* ★ Field hint text */
+.qt-field-hint {
+    display: block; font-size: 0.74rem;
+    color: #777; margin-top: 4px; font-style: italic;
+}
+/* ── TERMS SAVE BUTTON ─────────────────────────────── */
+.qt-save-terms-btn {
+    background: #1e7e34; color: #fff;
+    border: none; border-radius: 5px; padding: 5px 14px;
+    font-size: 0.78rem; font-weight: 700; cursor: pointer;
+    transition: background 0.2s; white-space: nowrap;
+}
+.qt-save-terms-btn:hover:not(:disabled) { background: #165c26; }
+.qt-save-terms-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+
+.qt-terms-unsaved-badge {
+    font-size: 0.72rem; color: #f4a100;
+    font-weight: 700; animation: qtPulse 1.5s ease-in-out infinite;
+}
+@keyframes qtPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+}
+
+/* ===== DOWNLOAD MODAL ===== */
+
+.qt-download-modal {
+    width: 420px;
+}
+
+.download-body {
+    text-align: center;
+}
+
+.download-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+/* Cards */
+.download-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.download-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: #fff;
+}
+
+.download-card:hover {
+    border-color: #0f3b5e;
+    background: #f0f6fb;
+}
+
+.download-card .icon {
+    font-size: 1.5rem;
+}
+
+.download-card .title {
+    font-weight: 700;
+    color: #0f3b5e;
+    font-size: 0.85rem;
+}
+
+.download-card .desc {
+    font-size: 0.75rem;
+    color: #666;
+}
+
+
+.sum-del-btn {
+    background: #ffe0e0;
+    border: 1px solid #f5bcbc;
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 3px 8px;
+    font-size: 0.75rem;
+    color: #c0392b;
+    transition: all 0.2s;
+}
+
+.sum-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    flex-wrap: nowrap; /* IMPORTANT */
+}
+
+.qt-items-summary-tbl td:last-child,
+.qt-items-summary-tbl th:last-child {
+    width: 90px;
+    min-width: 90px;
+    text-align: center;
+}
+
+.sum-edit-btn,
+.sum-del-btn {
+    width: 32px;
+    height: 28px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0
+}
+/* SMALL DELETE CONFIRMATION MODAL */
+
+/* .slds-modal__container {
+    width: 26rem !important;
+    max-width: 26rem !important;
+}
+
+.slds-modal__header {
+    padding: 0.8rem 1rem !important;
+}
+
+.slds-modal__content {
+    padding: 1rem !important;
+    min-height: auto !important;
+}
+
+.slds-modal__footer {
+    padding: 0.8rem 1rem !important;
+} */
+ .qt-delete-modal {
+
+    position: fixed;
+
+    top: 50%;
+
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+
+    width: 360px;
+
+    background: #fff;
+
+    border-radius: 10px;
+
+    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+
+    z-index: 99999;
+
+    overflow: hidden;
+}
+
+.qt-delete-title {
+
+    padding: 16px 20px;
+
+    font-size: 18px;
+
+    font-weight: 700;
+
+    border-bottom: 1px solid #eee;
+}
+
+.qt-delete-body {
+
+    padding: 24px 20px;
+
+    font-size: 14px;
+
+    color: #444;
+}
+
+.qt-delete-footer {
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 10px;
+
+    padding: 14px 20px;
+
+    border-top: 1px solid #eee;
+}
+
+.qt-btn-danger {
+
+    background: #d92d20;
+
+    color: white;
+}

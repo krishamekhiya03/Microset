@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Quotation</fullName>
+    <active>true</active>
+    <label>Quotation</label>
+    <picklistValues>
+        <picklist>Delivery_Term__c</picklist>
+        <values>
+            <fullName>1 to 2 weeks from Confirmed PO %26 Advance</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>3 to 4 weeks from Confirmed PO %26 Advance</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Ex-Stock</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>Others</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Payment_Picklist__c</picklist>
+        <values>
+            <fullName>100%25 along with PO</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>30%25 along with PO</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>50%25 along with PO</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Payment_Term__c</picklist>
+        <values>
+            <fullName>100%25 with GST Advance along with PO</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>100%25 with GST against Proforma Invoice prior to despatch</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>50%25 Advance along with PO%2C Balance with GST Against Proforma Invoice prior to despatch</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Others</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Quotation_Created_By__c</picklist>
+        <values>
+            <fullName>Sandeep Patil %7C General Manager %7C %2B91 9175433151</fullName>
+            <default>true</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Quotation_Status__c</picklist>
+        <values>
+            <fullName>Accepted</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Approved</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Denied</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Draft</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>In Review</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Presented</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Rejected</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+</RecordType>

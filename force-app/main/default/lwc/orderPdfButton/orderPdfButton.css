@@ -1,0 +1,17 @@
+/* Full modal width */
+:host {
+    display: block;
+}
+
+/* Remove internal padding */
+.container {
+    width: 100%;
+    height: 95vh;
+}
+
+/* Full iframe */
+.pdfFrame {
+    width: 100%;
+    height: 100%;
+    border: none;
+}

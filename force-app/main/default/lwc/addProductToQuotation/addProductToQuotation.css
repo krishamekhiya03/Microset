@@ -1,0 +1,254 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    height: 68vh;
+}
+
+.header {
+    text-align: center;
+    font-size: 15px;
+    font-weight: bold;
+    background-color: rgb(199, 199, 227);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.content {
+    flex: 1;
+    max-height: 80vh;
+    overflow-y: auto;
+    padding: 1rem;
+    background: #f9f9f9;
+    max-width: 100%;
+}
+
+.sticky-footer {
+    position: sticky;
+    bottom: 0px;
+    background-color: rgb(199, 199, 227);
+    padding: 0px;
+    margin: 0px;
+    z-index: 100;
+    border-top: 1px solid #d8dde6;
+    text-align: center;
+    height: 80px;
+}
+
+.NextButton {
+    padding-bottom: 10px;
+    margin: 2px;
+}
+
+.inputVariable {
+    position: sticky;
+}
+
+.slds-modal__content {
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.suggestion-box-container {
+    max-height: 500px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.table-custom {
+    height: 100px;
+    background-color: #f3f3f3;
+}
+
+.table-custom:hover {
+    cursor: pointer;
+}
+
+.label-bold {
+    font-weight: bold;
+    margin-right: 4px;
+    color: #646464;
+}
+
+/* TABLE WRAPPER */
+.table-wrapper {
+    width: 100%;
+    overflow: auto;
+    max-height: 52vh;
+}
+
+/* TABLE — fixed layout so columns respect widths */
+.custom-table,
+.review-table {
+    width: 100%;
+    table-layout: fixed;       /* ← KEY FIX: fixed layout enforce karta hai widths */
+    border-collapse: collapse;
+    min-width: 900px;          /* horizontal scroll allow karta hai narrow screens pe */
+}
+
+/* HEADER */
+.custom-table th,
+.review-table th {
+    background: #f3f3f3;
+    font-weight: 600;
+    padding: 10px 8px;
+    text-align: left;
+    vertical-align: top;
+    white-space: nowrap;       /* ← header text wrap nahi hoga */
+}
+
+/* BODY CELLS */
+.custom-table td,
+.review-table td {
+    padding: 10px 8px;
+    vertical-align: top !important;
+    white-space: normal;
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
+
+/* CHECKBOX COLUMN */
+.custom-table th:nth-child(1),
+.custom-table td:nth-child(1) {
+    width: 50px;
+    min-width: 50px;
+    text-align: center;
+}
+
+/* HSN/SAC COLUMN — Step 1 */
+.custom-table th:nth-child(2),
+.custom-table td:nth-child(2) {
+    width: 110px;
+    min-width: 110px;
+    white-space: nowrap;       /* ← number wrap nahi hoga */
+}
+
+/* MODEL NUMBER COLUMN — Step 1 */
+.custom-table th:nth-child(3),
+.custom-table td:nth-child(3) {
+    width: 120px;
+    min-width: 120px;
+}
+
+/* PRODUCT NAME COLUMN — Step 1 */
+.custom-table th:nth-child(4),
+.custom-table td:nth-child(4) {
+    width: 200px;
+    min-width: 200px;
+}
+
+/* DESCRIPTION COLUMN — Step 1 */
+.custom-table th:nth-child(5),
+.custom-table td:nth-child(5) {
+    width: auto;               /* baaki space le lega */
+}
+
+/* PRICE COLUMN — Step 1 */
+.custom-table th:nth-child(6),
+.custom-table td:nth-child(6) {
+    width: 100px;
+    min-width: 100px;
+    white-space: nowrap;
+}
+
+/* DISCOUNT COLUMN — Step 1 */
+.custom-table th:nth-child(7),
+.custom-table td:nth-child(7) {
+    width: 100px;
+    min-width: 100px;
+    white-space: nowrap;
+}
+
+/* HSN/SAC — Step 2 */
+.review-table th:nth-child(1),
+.review-table td:nth-child(1) {
+    width: 110px;
+    min-width: 110px;
+    white-space: nowrap;
+}
+
+/* MODEL NUMBER — Step 2 */
+.review-table th:nth-child(2),
+.review-table td:nth-child(2) {
+    width: 120px;
+    min-width: 120px;
+}
+
+/* PRODUCT NAME — Step 2 */
+.review-table th:nth-child(3),
+.review-table td:nth-child(3) {
+    width: 160px;
+    min-width: 160px;
+}
+
+/* DESCRIPTION — Step 2 */
+.review-table th:nth-child(4),
+.review-table td:nth-child(4) {
+    width: auto;
+}
+
+/* QUANTITY, PRICE, DISCOUNT, GST — Step 2 */
+.review-table th:nth-child(5),
+.review-table td:nth-child(5),
+.review-table th:nth-child(6),
+.review-table td:nth-child(6),
+.review-table th:nth-child(7),
+.review-table td:nth-child(7),
+.review-table th:nth-child(8),
+.review-table td:nth-child(8) {
+    width: 100px;
+    min-width: 100px;
+}
+
+/* PRODUCT NAME CELL */
+.product-name-cell {
+    vertical-align: top;
+    line-height: 1.6;
+    white-space: normal;
+    word-break: break-word;
+}
+
+/* DESCRIPTION CONTENT */
+.description-cell,
+.review-description-cell {
+    vertical-align: top;
+}
+
+.description-box,
+.review-description-box {
+    white-space: normal !important;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    line-height: 1.7;
+    max-height: unset;
+    overflow: visible;
+    padding-right: 10px;
+}
+
+/* RICH TEXT */
+.description-box lightning-formatted-rich-text,
+.review-description-box lightning-input-rich-text {
+    width: 100%;
+    display: block;
+}
+
+/* INPUT COLUMNS */
+.small-input-cell {
+    width: 100px;
+    min-width: 100px;
+}
+
+.small-input-cell lightning-input {
+    width: 100%;
+}
+
+/* REVIEW TABLE WRAPPER */
+.review-table-wrapper {
+    max-height: 55vh;
+    overflow: auto;
+}

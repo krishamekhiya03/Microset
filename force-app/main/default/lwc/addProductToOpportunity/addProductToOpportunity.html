@@ -1,0 +1,245 @@
+<template>
+
+    <!-- MAIN GRID -->
+    <div class="slds-grid slds-wrap">
+
+        <!-- MODAL COLUMN -->
+        <div class="slds-col slds-size_12-of-12">
+
+            <!-- HEADER -->
+            <header class="slds-modal__header">
+                <h2 class="slds-text-heading_medium">Add Products</h2>
+            </header>
+
+            <!-- BODY -->
+            <div class="slds-p-around_small">
+                <div class="slds-modal__content slds-modal_large slds-p-around_small slds-is-relative">
+
+                    <!-- STEP 1 -->
+                    <template if:true={showProductSelection}>
+                        <div class='inputVariable'>
+                            <lightning-input type="text" placeholder='Search Products...' value={searchKey} onchange={handleSearchChange} class='slds-m-bottom_small'>
+                            </lightning-input>
+                        </div>
+
+                        <!-- <lightning-datatable key-field="Id" data={visibleProducts} columns={columns} onrowselection={handleRowSelection} selected-rows={pageSelectedRowIds}>
+                        </lightning-datatable> -->
+
+                        <div class="table-wrapper">
+
+                            <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_fixed-layout custom-table">
+
+                                <thead>
+                                    <tr>
+                                        <th style="width:50px;"></th>
+                                        <th>HSN/SAC</th>
+                                        <th style="width:140px;">Model Number</th>
+                                        <th style="width:220px;">Product Name</th>
+                                        <th style="width:420px;">Description</th>
+                                        <th style="width:140px;">Currency</th>
+                                        <!-- <th>Quantity<br />(Nos)</th> -->
+                                        <th>Price</th>
+                                        <th>Discount(%)</th>
+                                        <!-- <th>GST</th> -->
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+
+                                    <template for:each={visibleProducts} for:item="row">
+
+                                        <tr key={row.Id}>
+                                            <td>
+                                                <lightning-input type="checkbox" data-id={row.Id} checked={row.isSelected} onchange={handleRowSelection}>
+                                                </lightning-input>
+                                            </td>
+
+                                            <td>{row.ProductCode}</td>
+                                            <td>{row.ModelNumber}</td>
+                                            <td>{row.ProductName}</td>
+
+                                            <!-- Rich Text Description -->
+                                            <td class="description-cell">
+
+                                                <div class="description-box">
+
+                                                    <lightning-formatted-rich-text value={row.LineDescription__c}>
+                                                    </lightning-formatted-rich-text>
+
+                                                </div>
+
+                                            </td>
+                                            <td>
+                                                <lightning-combobox variant="label-hidden" value={row.CurrencyIsoCode} options={currencyOptions} disabled="true" data-id={row.Id} onchange={handleCurrencyChange}>
+                                                </lightning-combobox>
+                                            </td>
+
+                                            <!-- <td style="text-align: center;">{row.Quantity__c}</td> -->
+
+                                            <td style="text-align: center;">{row.SalesPrice__c}</td>
+
+                                            <td style="text-align: center;">{row.Discount__c}</td>
+                                            <!-- <td style="text-align: center;">{row.GST__c}%</td> -->
+
+                                        </tr>
+
+                                    </template>
+
+                                </tbody>
+
+                            </table>
+
+
+                        </div>
+
+                        <!-- PAGINATION -->
+                        <div class="slds-m-top_small slds-align_absolute-center">
+                            <lightning-button label="First" onclick={handleFirst} disabled={disablePrevious} icon-name="utility:jump_to_left"></lightning-button>
+                            <lightning-button label="Previous" onclick={handlePrevious} disabled={disablePrevious} class="slds-m-left_small" icon-name="utility:chevronleft"></lightning-button>
+                            <lightning-button label="Next" onclick={handleNext} disabled={disableNext} class="slds-m-left_small" icon-name="utility:chevronright" icon-position="right"></lightning-button>
+                            <lightning-button label="Last" onclick={handleLast} disabled={disableNext} class="slds-m-left_small" icon-name="utility:jump_to_right" icon-position="right"></lightning-button>
+                            <span class="slds-m-left_medium">Page {currentPage} of {totalPages}</span>
+                        </div>
+                    </template>
+
+                    <!-- STEP 2 -->
+                    <template if:false={showProductSelection}>
+                        <section>
+
+                            <!-- HEADER -->
+                            <div class="slds-p-around_x-small slds-text-align_center slds-theme_shade">
+                                <h1 class="slds-text-heading_medium">Review Selected Products</h1>
+                            </div>
+
+                            <!-- CONTENT -->
+                            <!-- <div class="slds-p-around_small" style="max-height: 50vh; overflow-y: auto;">
+                                <lightning-datatable key-field="Id" data={selectedProducts} columns={oppoLineCol} oncellchange={handleCellChange} hide-checkbox-column suppress-bottom-bar>
+                                </lightning-datatable>
+                            </div> -->
+                            <div class="table-wrapper review-table-wrapper">
+
+                                <table class="slds-table slds-table_cell-buffer slds-table_bordered review-table">
+
+                                    <thead>
+                                        <tr>
+                                            <th style="width:12%">HSN/SAC</th>
+                                            <th style="width:10%">Model Number</th>
+                                            <th style="width:16%">Product Name</th>
+                                            <th style="width:32%">Description</th>
+                                            <th style="width:8%">Quantity<br />(Nos)</th>
+                                            <th style="width:10%">Currency</th> <!-- ★ NEW -->
+                                            <th style="width:10%">Price</th>
+                                            <th style="width:8%">Discount(%)</th>
+                                            <th style="width:8%">GST(%)</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+
+                                        <template for:each={selectedProducts} for:item="row">
+
+                                            <tr key={row.Id}>
+
+                                                <td>{row.ProductCode}</td>
+                                                <td class="small-input-cell">
+                                                    <lightning-input type="text" variant="label-hidden" value={row.ModelNumber} data-id={row.Id} data-field="ModelNumber" onchange={handleFieldChange}>
+                                                    </lightning-input>
+                                                </td>
+                                                <td>{row.ProductName}</td>
+
+                                                <!-- DESCRIPTION -->
+                                                <td class="review-description-cell">
+
+                                                    <div class="review-description-box">
+
+                                                        <lightning-input-rich-text class="compact-richtext" value={row.LineDescription__c} data-id={row.Id} onchange={handleDescriptionChange}>
+                                                        </lightning-input-rich-text>
+
+                                                    </div>
+
+                                                </td>
+
+                                                <!-- QUANTITY -->
+                                                <td class="small-input-cell">
+
+                                                    <lightning-input type="number" variant="label-hidden" value={row.Quantity__c} data-id={row.Id} data-field="Quantity__c" onchange={handleFieldChange}>
+                                                    </lightning-input>
+
+                                                </td>
+
+                                                <td class="small-input-cell">
+                                                    <lightning-combobox variant="label-hidden" value={row.CurrencyIsoCode} options={currencyOptions} disabled="true" data-id={row.Id} onchange={handleCurrencyChange}>
+                                                    </lightning-combobox>
+                                                </td>
+
+                                                <!-- PRICE -->
+                                                <!-- <td class="small-input-cell">
+
+                                                    <lightning-input type="number" variant="label-hidden" formatter="currency" value={row.SalesPrice__c} data-id={row.Id} data-field="SalesPrice__c" onchange={handleFieldChange}>
+                                                    </lightning-input>
+
+                                                </td> -->
+                                                <!-- PRICE -->
+                                                <!-- PRICE -->
+                                                <td class="small-input-cell">
+                                                    <lightning-input type="number" variant="label-hidden" value={row.SalesPrice__c} data-id={row.Id} data-field="SalesPrice__c" onchange={handleFieldChange}>
+                                                    </lightning-input>
+                                                </td>
+
+                                                <!-- DISCOUNT -->
+                                                <td class="small-input-cell">
+
+                                                    <lightning-input type="number" variant="label-hidden" value={row.Discount__c} data-id={row.Id} data-field="Discount__c" onchange={handleFieldChange}>
+                                                    </lightning-input>
+
+                                                </td>
+
+                                                <!-- GST -->
+                                                <td class="small-input-cell">
+
+                                                    <lightning-input type="number" variant="label-hidden" value={row.GST__c} data-id={row.Id} data-field="GST__c" onchange={handleFieldChange}>
+                                                    </lightning-input>
+
+                                                </td>
+                                            </tr>
+
+                                        </template>
+
+                                    </tbody>
+
+                                </table>
+
+                            </div>
+
+                        </section>
+                    </template>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- FOOTER (OUTSIDE like Quotation) -->
+    <div class="slds-grid slds-wrap" if:true={enableFooter}>
+        <div class="slds-col slds-size_12-of-12">
+
+            <footer class="slds-modal__footer">
+
+                <template if:true={isNextVisible}>
+                    <lightning-button class="NextButton" variant="brand" label="Next" onclick={handleNextStep}>
+                    </lightning-button>
+                </template>
+
+                <div class="slds-align_absolute-center" if:false={showProductSelection}>
+                    <lightning-button label="Back" onclick={handleBack}></lightning-button>
+                    <lightning-button variant="brand" label={buttonLabel} onclick={handleSaveItems} class="slds-m-left_small">
+                    </lightning-button>
+                </div>
+
+            </footer>
+
+        </div>
+    </div>
+
+</template>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>Commissioning</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Commissioning</shortDescription>
+        <value>Extra Charges if Required</value>
+    </labels>
+    <labels>
+        <fullName>FORCE_MAJEURE</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Force Majeure</shortDescription>
+        <value>Every effort will be made to deliver the goods within stipulated delivery period, but we take no responsibility for any delay occasioned by reasons beyond our control, known as ‘Force Majeure’. Delayed delivery will not entitle the customer for cancellation of contract. No claim for refund of deposits / advance or damages will be entertained in such cases.</value>
+    </labels>
+    <labels>
+        <fullName>GSTN_PAN</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>GSTN, PAN</shortDescription>
+        <value>27AAWPR2850F1Z8 / AAWPR2850F</value>
+    </labels>
+    <labels>
+        <fullName>GST_Amount</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>GST Amount</shortDescription>
+        <value>18</value>
+    </labels>
+    <labels>
+        <fullName>Inspection</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Inspection</shortDescription>
+        <value>If Applicable At our Works</value>
+    </labels>
+    <labels>
+        <fullName>Jurisdiction</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Jurisdiction</shortDescription>
+        <value>Irrespective of where the material goes or what is mentioned in the purchase order; disputes, if any, shall be subject to Pune jurisdiction only.</value>
+    </labels>
+    <labels>
+        <fullName>MSME_ZED_Udyam_Reg_No</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>MSME (ZED) Udyam Reg. No.</shortDescription>
+        <value>UDYAM-MH-26-0015196</value>
+    </labels>
+    <labels>
+        <fullName>Prices</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Prices</shortDescription>
+        <value>Ex-Works, Pune</value>
+    </labels>
+    <labels>
+        <fullName>Scope</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Scope</shortDescription>
+        <value>Piping, Welding, Cutting, Cable , Cable Laying, Trays, Tray work, Mating Flanges, Flow Cell / Dip Pipe for Sensors, PU Tube, PU Tube Fittings, Installation of Instruments, Instrument Panel, 24 VDC Power Supply, Accessories, Valves etc. if required in your scope.</value>
+    </labels>
+    <labels>
+        <fullName>Taxes</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Taxes</shortDescription>
+        <value>GST @ 18% Extra or as applicable at the time of delivery</value>
+    </labels>
+    <labels>
+        <fullName>Transit_Insurance</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Transit Insurance</shortDescription>
+        <value>In your scope</value>
+    </labels>
+    <labels>
+        <fullName>Warranty</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Warranty</shortDescription>
+        <value>We warranty the instruments against only manufacturing defects during 12 months from date of invoice subject to our detailed warranty terms &amp; conditions sent with the material. No other Guarantee / Warranty will be binding on us. Under no circumstances we will be responsible to anybody for any type of consequential liability/ loss of public property/ loss of life due to any reasons whatsoever i.e. public/ product is not within the purview of this warranty The warranty does not cover perishable items like pH / ION / DO / Chlorine / Conductivity &amp; other Sensors, all semiconductor devices, Fuse, Transistor, Electrical / Mechanical/ Rubber Parts like Electric Motors, Switches, Contactors, Thermostats, Heaters, Diaphragms, “O” Ring, etc., Thruster Module, Batteries, PZT Crystals, etc &amp; other imported components etc. The Performance of the Sensor / Electrode will be drastically affected if integral cable is cut or damaged.</value>
+    </labels>
+    <labels>
+        <fullName>WarrantyExtand</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>WarrantyExtand</shortDescription>
+        <value>Guarantee / Manufacturing defect clause is not applicable in such case. The Performance / Life of pH Electrode/ Sensor will get affected by presence of HF, Solvents, and Aromatic compounds, Highly Acidic / Alkaline Medium.</value>
+    </labels>
+    <labels>
+        <fullName>X30_Days</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Validity</shortDescription>
+        <value>30 Days</value>
+    </labels>
+</CustomLabels>

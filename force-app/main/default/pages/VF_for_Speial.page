@@ -1,0 +1,23 @@
+<apex:page renderAs="pdf"
+           showHeader="false"
+           sidebar="false"
+           applyBodyTag="false">
+
+    <html>
+        <head>
+            <style type="text/css">
+                body {
+                    font-family: 'Arial Unicode MS';
+                    font-size: 12pt;
+                }
+            </style>
+        </head>
+
+        <body>
+            <p>
+                @ % Ω ° ₹ µ β ” ’ &lt; &gt; ≤ ≥ π &amp; ¼” ½” ¾”
+            </p>
+        </body>
+       
+    </html>
+     </apex:page>

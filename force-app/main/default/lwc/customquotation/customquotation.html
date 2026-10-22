@@ -1,0 +1,943 @@
+<template>
+    <div class="qt-shell">
+
+        <!-- ══════════════════════════════════════════
+             TOP TOOLBAR
+        ══════════════════════════════════════════ -->
+        <div class="qt-toolbar">
+            <div class="qt-toolbar-brand">
+                <span class="qt-toolbar-icon">📄</span>
+                <span class="qt-toolbar-title">Quotation Builder</span>
+                <template if:true={quotationNumber}>
+                    <span class="qt-toolbar-badge">{quotationNumber}</span>
+                </template>
+            </div>
+            <div class="qt-toolbar-actions">
+                <div class="qt-mode-pills">
+                    <button class={editPillClass} onclick={switchToEdit}>✏️ Edit</button>
+                    <button class={previewPillClass} onclick={switchToPreview}>👁 Preview</button>
+                </div>
+                <!-- <button class="qt-btn qt-btn-pdf" onclick={handleDownloadClick}>
+                    ⬇️ Download
+                </button> -->
+                <button class="qt-btn qt-btn-pdf" onclick={downloadInSalesforce}>
+                    ⬇️ Download
+                </button>
+                <button class="qt-btn qt-btn-primary" onclick={openEmailModal}>
+                    📧 Save &amp; Email
+                </button>
+            </div>
+        </div>
+
+        <!-- ══════════════════════════════════════════
+             EDIT MODE
+        ══════════════════════════════════════════ -->
+        <template if:true={isEditMode}>
+            <div class="qt-edit-layout">
+
+                <!-- ── LEFT COLUMN ── -->
+                <div class="qt-edit-col">
+
+                    <!-- Quotation Meta -->
+                    <div class="qt-card">
+                        <div class="qt-card-hd"><span class="qt-card-hd-icon">📋</span> Quotation Details</div>
+                        <div class="qt-card-bd">
+                            <div class="qt-grid-2">
+                                <div class="qt-field">
+                                    <label>Offer Number *</label>
+                                    <input type="text" value={quotationNumber} onchange={f_quotationNumber} disabled placeholder="MIC/2025-26/Q/00001" />
+                                </div>
+                                <div class="qt-field">
+                                    <label>Offer Name *</label>
+                                    <input type="text" value={quotationName} onchange={f_quotationName} placeholder="MIC" />
+                                </div>
+                                <div class="qt-field">
+                                    <label>Offer Date *</label>
+                                    <input type="date" value={quotationDate} disabled onchange={f_quotationDate} />
+                                </div>
+                                <div class="qt-field">
+                                    <label>Reference</label>
+                                    <input type="text" value={reference} onchange={f_reference} disabled placeholder="Email Enquiry dated..." />
+                                </div>
+                                <div class="qt-field">
+                                    <label>P & F (%)</label>
+                                    <input type="number" value={pfPercent} onchange={handlePfChange} placeholder="Enter P&F %" />
+                                </div>
+                                <div class="qt-field">
+                                    <label>Freight Charges</label>
+                                    <input type="text" value={freightCharges} onchange={handleFreightChange} />
+                                </div>
+                                <div class="qt-field">
+                                    <label>Offer Created By</label>
+                                    <select onchange={handleQuotationCreatedByChange}>
+
+                                        <option value="" selected={isNoneSelected}>
+                                            --None--
+                                        </option>
+
+                                        <template for:each={quotationCreatedByOptionsForUI} for:item="opt">
+
+                                            <option key={opt.value} value={opt.value} selected={opt.selected}>
+
+                                                {opt.label}
+
+                                            </option>
+
+                                        </template>
+
+                                    </select>
+                                    <!-- <select value={quotationCreatedBy} onchange={handleQuotationCreatedByChange}>
+
+                                        <option value="">--None--</option>
+
+                                        <template for:each={quotationCreatedByOptions} for:item="opt">
+                                            <option key={opt.value} value={opt.value}>
+                                                {opt.label}
+                                            </option>
+                                        </template>
+
+                                    </select>-->
+                                </div>
+                                <!-- <div class="qt-field">
+                                    <label>GST (%)</label>
+                                    <input type="text" step="0.01" value={gstPercent} onchange={handleGSTChange} placeholder="Enter GST %" />
+                                </div> -->
+                                <!-- <div class="qt-field">
+                                    <label>HSN / SAC Code</label>
+                                    <input type="text" value={hsnCode} onchange={handleHSNChange} placeholder="Enter HSN/SAC Code" />
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Customer Info -->
+                    <div class="qt-card">
+                        <div class="qt-card-hd"><span class="qt-card-hd-icon">👤</span> Customer Information</div>
+                        <div class="qt-card-bd">
+                            <div class="qt-grid-2">
+                                <div class="qt-field">
+                                    <label>Customer / Company Name *</label>
+                                    <input type="text" value={customerName} onchange={f_customerName} disabled placeholder="Frontline Controls" />
+                                </div>
+                                <div class="qt-field">
+                                    <label>Contact Person *</label>
+                                    <input type="text" value={contactPerson} onchange={f_contactPerson} disabled placeholder="Mr. Terry Barnsley" />
+                                </div>
+                                <div class="qt-field">
+                                    <label>Mobile Contact *</label>
+                                    <input type="text" value={mobileNumber} onchange={f_mobileNumber} disabled placeholder="0824573279" />
+                                </div>
+                                <div class="qt-field">
+                                    <label>Email *</label>
+                                    <input type="email" value={customerEmail} onchange={f_customerEmail} placeholder="terence@frontline.co.za" />
+                                </div>
+                                <div class="qt-field qt-span2">
+                                    <label>Customer Address *</label>
+                                    <textarea rows="3" value={customerAddress} onchange={f_customerAddress} placeholder="336 Boundary Rd, ...">{customerAddress}</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div><!-- end left col -->
+
+                <!-- ── RIGHT COLUMN: LINE ITEMS ── -->
+                <div class="qt-edit-col">
+                    <div class="qt-card">
+                        <div class="qt-card-hd">
+                            <span class="qt-card-hd-icon">📦</span> Line Items
+                            <div class="qt-card-hd-actions">
+                                <!-- ★ NEW: Add Group button -->
+                                <button class="qt-add-group-btn" onclick={openAddGroupModal}>＋ Add Group</button>
+                                <button class="qt-add-item-btn" onclick={openItemsPopup}>📋 Manage Items</button>
+                            </div>
+                        </div>
+                        <div class="qt-card-bd qt-line-items-body">
+
+                            <!-- ★ NEW: Grouped + ungrouped view -->
+                            <template if:true={hasItems}>
+
+                                <!-- ★ Grouped sections -->
+                                <template if:true={hasGroups}>
+                                    <template for:each={groupsWithItems} for:item="grp">
+                                        <div key={grp.id} class="qt-group-section">
+
+                                            <!-- Group Header -->
+                                            <div class="qt-group-header">
+                                                <span class="qt-group-header-icon">📁</span>
+                                                <span class="qt-group-header-name">{grp.headerName}</span>
+                                                <div class="qt-group-header-actions">
+                                                    <button class="qt-group-add-item-btn" data-group-id={grp.id} onclick={openItemsPopupForGroup}>+ Item</button>
+                                                    <button class="qt-group-edit-btn" data-group-id={grp.id} onclick={openEditGroupModal}>✏️</button>
+                                                    <button class="qt-group-del-btn" data-group-id={grp.id} onclick={handleDeleteGroup}>🗑</button>
+                                                </div>
+                                            </div>
+
+                                            <!-- Items under this group -->
+                                            <template if:true={grp.items.length}>
+                                                <table class="qt-items-summary-tbl qt-items-summary-tbl--indented">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>#</th>
+                                                            <th>Product Name</th>
+                                                            <th>Qty</th>
+                                                            <th>List Price</th>
+                                                            <th>Total</th>
+                                                            <th></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <template for:each={grp.items} for:item="li">
+                                                            <tr key={li.id} class={li.summaryRowClass}>
+                                                                <td>{li.itemNumber}</td>
+                                                                <td>
+                                                                    <div class="sum-prod-name">{li.productName}</div>
+                                                                    <template if:true={li.modelNumber}>
+                                                                        <!-- <div class="sum-hsn">HSN: {li.hsnCode}</div> -->
+                                                                        <div class="sum-hsn">Model No: {li.modelNumber}</div>
+                                                                    </template>
+                                                                </td>
+                                                                <td>{li.qtyDisplay}</td>
+                                                                <td>{li.sym} {li.unitPriceFmt}</td>
+                                                                <td class="sum-total">{li.sym} {li.totalPriceFmt}</td>
+                                                                <td class="sum-actions">
+                                                                    <button class="sum-edit-btn" data-id={li.id} onclick={openEditForItem}>✏️</button>
+                                                                    <button class="sum-del-btn" data-id={li.id} onclick={removeItem}>🗑</button>
+                                                                </td>
+
+                                                            </tr>
+                                                        </template>
+                                                    </tbody>
+                                                </table>
+                                            </template>
+
+                                            <template if:false={grp.items.length}>
+                                                <div class="qt-group-empty">No items in this group yet</div>
+                                            </template>
+
+                                        </div>
+                                    </template>
+                                </template>
+
+                                <!-- ★ Ungrouped items (standalone) -->
+                                <template if:true={ungroupedLineItems.length}>
+                                    <div class="qt-group-section qt-group-section--ungrouped">
+                                        <div class="qt-group-header qt-group-header--ungrouped">
+                                            <span class="qt-group-header-icon">📋</span>
+                                            <span class="qt-group-header-name">Standalone Items</span>
+                                        </div>
+                                        <table class="qt-items-summary-tbl">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Product Name</th>
+                                                    <th>Qty</th>
+                                                    <th>List Price</th>
+                                                    <th>Total</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <template for:each={ungroupedLineItems} for:item="li">
+                                                    <tr key={li.id} class={li.summaryRowClass}>
+                                                        <td>{li.itemNumber}</td>
+                                                        <td>
+                                                            <div class="sum-prod-name">{li.productName}</div>
+                                                            <template if:true={li.modelNumber}>
+                                                                <div class="sum-hsn">Model No: {li.modelNumber}</div>
+                                                            </template>
+                                                        </td>
+                                                        <td>{li.qtyDisplay}</td>
+                                                        <td>{li.sym} {li.unitPriceFmt}</td>
+                                                        <td class="sum-total">{li.sym} {li.totalPriceFmt}</td>
+                                                        <td class="sum-actions">
+                                                            <button class="sum-edit-btn" data-id={li.id} onclick={openEditForItem}>✏️</button>
+                                                            <button class="sum-del-btn" data-id={li.id} onclick={removeItem}>🗑</button>
+                                                        </td>
+                                                    </tr>
+                                                </template>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </template>
+
+                                <!-- Fallback: no groups defined, show flat list -->
+                                <!-- <template if:false={hasGroups}>
+                                    <table class="qt-items-summary-tbl">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Product Name1</th>
+                                                <th>Qty</th>
+                                                <th>List Price</th>
+                                                <th>Total</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <template for:each={lineItems} for:item="li">
+                                                <tr key={li.id} class={li.summaryRowClass}>
+                                                    <td>{li.itemNumber}</td>
+                                                    <td>
+                                                        <div class="sum-prod-name">{li.productName}</div>
+                                                        <template if:true={li.hsnCode}>
+                                                            <div class="sum-hsn">HSN: {li.hsnCode}</div>
+                                                        </template>
+                                                    </td>
+                                                    <td>{li.qtyDisplay}</td>
+                                                    <td>{li.sym} {li.unitPriceFmt}</td>
+                                                    <td class="sum-total">{li.sym} {li.itemTotalFmt}</td>
+                                                    <td>
+                                                        <button class="sum-edit-btn" data-id={li.id} onclick={openEditForItem}>✏️</button>
+                                                    </td>
+                                                </tr>
+                                            </template>
+                                        </tbody>
+                                    </table>
+                                </template> -->
+
+                            </template>
+
+                            <template if:false={hasItems}>
+                                <div class="qt-empty-items">
+                                    📦 No items yet — click "Manage Items"
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+
+                    <!-- Summary card in edit mode -->
+                    <template if:true={hasItems}>
+                        <div class="qt-card qt-summary-card">
+                            <div class="qt-card-hd"><span class="qt-card-hd-icon">🧮</span> Running Total</div>
+                            <div class="qt-card-bd">
+                                <table class="qt-summary-tbl">
+                                    <tr>
+                                        <td>Sub Total</td>
+                                        <td>{primaryCurrency} {subtotalFmt}</td>
+                                    </tr>
+                                    <!-- <tr>
+                                        <td>Total Discount</td>
+                                        <td>– {primaryCurrency} {totalDiscFmt}</td>
+                                    </tr> -->
+                                    <tr>
+                                        <td>P&amp;F ({pfPercent}%)</td>
+                                        <td>{primaryCurrency} {pfAmtFmt}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Freight</td>
+                                        <td>{freightDisplay}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Total GST</td>
+                                        <td>{primaryCurrency} {totalGSTFmt}</td>
+                                    </tr>
+                                    <tr class="qt-grand-row">
+                                        <td>GRAND TOTAL</td>
+                                        <td>{primaryCurrency} {grandTotalFmt}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </template>
+
+                </div><!-- end right col -->
+
+                <!-- Terms & Conditions -->
+                <div class="qt-card qt-full-width">
+                    <div class="qt-card-hd">
+                        <span class="qt-card-hd-icon">📑</span> Terms &amp; Conditions
+                        <div class="qt-card-hd-actions" style="margin-left:auto; display:flex; align-items:center; gap:8px;">
+                            <template if:true={hasTermsChanges}>
+                                <span class="qt-terms-unsaved-badge">● Unsaved changes</span>
+                            </template>
+                            <!-- <button class="qt-save-terms-btn" onclick={handleSaveTerms} disabled={isSavingTerms}>
+                                <template if:true={isSavingTerms}>⏳ Saving...</template>
+                                <template if:false={isSavingTerms}>💾 Save Terms</template>
+                            </button> -->
+                        </div>
+                    </div>
+                    <div class="qt-card-bd">
+                        <table class="qt-terms-table">
+                            <tr>
+                                <td class="qt-term-label">Payment Terms</td>
+                                <td>
+
+                                    <lightning-combobox value={termsData.paymentTerms} options={paymentTermOptions} data-field="paymentTerms" onchange={handleTermsChange}>
+                                    </lightning-combobox>
+
+                                    <template if:true={showPaymentTermsCustom}>
+                                        <textarea class="qt-term-input" data-field="paymentTermsCustom" onchange={handleTermsChange} placeholder="Enter custom payment terms">
+                                    {termsData.paymentTermsCustom}
+                                </textarea>
+                                    </template>
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="qt-term-label">Delivery Terms</td>
+                                <td>
+
+                                    <lightning-combobox value={termsData.deliveryTerms} options={deliveryTermOptions} data-field="deliveryTerms" onchange={handleTermsChange}>
+                                    </lightning-combobox>
+
+                                    <template if:true={showDeliveryTermsCustom}>
+                                        <textarea class="qt-term-input" data-field="deliveryTermsCustom" onchange={handleTermsChange} placeholder="Enter custom delivery terms">
+                                            {termsData.deliveryTermsCustom}
+                                        </textarea>
+                                    </template>
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="qt-term-label">Prices</td>
+                                <td>
+                                    <textarea class="qt-term-input" data-field="prices" onchange={handleTermsChange}>{termsData.prices}</textarea>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="qt-term-label">Taxes</td>
+                                <td>
+                                    <textarea class="qt-term-input" data-field="taxes" onchange={handleTermsChange}>{termsData.taxes}</textarea>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="qt-term-label">GSTN / PAN</td>
+                                <td>
+                                    <textarea class="qt-term-input" data-field="gstnPan" onchange={handleTermsChange}>{termsData.gstnPan}</textarea>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="qt-term-label">MSME (ZED) Udyam Reg. No.</td>
+                                <td>
+                                    <textarea class="qt-term-input" data-field="msme" onchange={handleTermsChange}>{termsData.msme}</textarea>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="qt-term-label">Transit Insurance</td>
+                                <td>
+                                    <textarea class="qt-term-input" data-field="transit" onchange={handleTermsChange}>{termsData.transit}</textarea>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="qt-term-label">Commissioning</td>
+                                <td>
+                                    <textarea class="qt-term-input" data-field="commissioning" onchange={handleTermsChange}>{termsData.commissioning}</textarea>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="qt-term-label">Inspection</td>
+                                <td>
+                                    <textarea class="qt-term-input" data-field="inspection" onchange={handleTermsChange}>{termsData.inspection}</textarea>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="qt-term-label">Validity</td>
+                                <td>
+                                    <textarea class="qt-term-input" data-field="validity" onchange={handleTermsChange}>{termsData.validity}</textarea>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="qt-term-label">Scope</td>
+                                <td>
+                                    <textarea class="qt-term-input qt-large" data-field="scope" onchange={handleTermsChange}>{termsData.scope}</textarea>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="qt-term-label">Warranty</td>
+                                <td>
+                                    <textarea class="qt-term-input qt-large" data-field="warranty" onchange={handleTermsChange}>{termsData.warranty}</textarea>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="qt-term-label">Force Majeure</td>
+                                <td>
+                                    <textarea class="qt-term-input qt-large" data-field="forceMajeure" onchange={handleTermsChange}>{termsData.forceMajeure}</textarea>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="qt-term-label">Jurisdiction</td>
+                                <td>
+                                    <textarea class="qt-term-input" data-field="jurisdiction" onchange={handleTermsChange}>{termsData.jurisdiction}</textarea>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="qt-footer-actions" style="grid-column: 1 / -1;">
+                    <button class="qt-btn qt-btn-outline-dark" onclick={handleCancel}>
+                        Discard Changes
+                    </button>
+                    <button class="qt-btn qt-btn-success" onclick={handleSaveDetails} disabled={isSaving}>
+                        <template if:true={isSaving}>⏳ Saving...</template>
+                        <template if:false={isSaving}>💾 Save</template>
+                    </button>
+                </div>
+            </div>
+        </template>
+
+        <!-- ══════════════════════════════════════════
+             PREVIEW MODE - VF PAGE IN IFRAME
+        ══════════════════════════════════════════ -->
+        <template if:true={isPreviewMode}>
+            <div class="qt-preview-shell">
+                <template if:true={showVFPreview}>
+                    <iframe class="qt-vf-iframe" src={vfPageUrl} width="100%" height="800px" style="border: none;"></iframe>
+                </template>
+                <template if:false={showVFPreview}>
+                    <div class="qt-loading-preview">
+                        <div class="qt-spinner"></div>
+                        <p>Loading quotation preview...</p>
+                    </div>
+                </template>
+            </div>
+        </template>
+
+        <!-- ══════════════════════════════════════════
+             ★ NEW: GROUP NAME MODAL
+        ══════════════════════════════════════════ -->
+        <template if:true={showGroupModal}>
+            <div class="qt-modal-backdrop" onclick={closeGroupModal}></div>
+            <div class="qt-modal qt-group-modal">
+                <div class="qt-modal-hd">
+                    <span>📁 {groupModalTitle}</span>
+                    <button class="qt-modal-close" onclick={closeGroupModal}>✕</button>
+                </div>
+                <div class="qt-modal-bd">
+                    <div class="qt-field">
+                        <label>Group Header Name *</label>
+
+                        <select onchange={handleGroupNameChange}>
+                            <option value="">-- Select Group Header --</option>
+                            <template for:each={groupHeaderOptionsForUI} for:item="opt">
+                                <option key={opt.value} value={opt.value} selected={opt.selected}>
+                                    {opt.label}
+                                </option>
+                            </template>
+                        </select>
+
+                        <!-- ★ NEW: shown only when "Other" is selected -->
+                        <template if:true={showGroupNameCustom}>
+                            <input type="text" value={groupModalNameCustom} onchange={handleGroupNameCustomChange} placeholder="Enter custom group header name" style="margin-top:8px" />
+                        </template>
+
+                        <span class="qt-field-hint">This name will appear as a section header in the quotation PDF.</span>
+                    </div>
+                </div>
+                <div class="qt-modal-ft">
+                    <button class="qt-btn qt-btn-outline" onclick={closeGroupModal}>Cancel</button>
+                    <button class="qt-btn qt-btn-success" onclick={saveGroupModal}>
+                        {groupModalButtonLabel}
+                    </button>
+                </div>
+            </div>
+        </template>
+
+        <!-- ══════════════════════════════════════════
+             ★ ITEMS POPUP MODAL
+        ══════════════════════════════════════════ -->
+        <template if:true={showItemsPopup}>
+            <div class="qt-modal-backdrop" onclick={closeItemsPopup}></div>
+            <div class="qt-modal qt-items-modal">
+
+                <!-- Modal Header -->
+                <div class="qt-modal-hd">
+                    <div class="qt-modal-hd-left">
+                        <span class="qt-modal-hd-icon">📦</span>
+                        <span>Line Items</span>
+                        <span class="qt-items-count-badge">{lineItems.length} items</span>
+                    </div>
+                    <div class="qt-modal-hd-right">
+                        <!-- <button class="qt-modal-add-btn" onclick={addItemFromPopup}>+ Add New Item</button> -->
+                        <button class="qt-modal-close" onclick={handlePopupClose}>✕</button>
+                    </div>
+                </div>
+
+                <!-- Items List View -->
+                <template if:false={isEditingItem}>
+                    <div class="qt-modal-bd qt-items-list-bd">
+
+                        <!-- Stats bar -->
+                        <div class="qt-popup-stats">
+                            <div class="qt-stat-box">
+                                <span class="qt-stat-num">{lineItems.length}</span>
+                                <span class="qt-stat-lbl">TOTAL ITEMS</span>
+                            </div>
+                            <div class="qt-stat-divider"></div>
+                            <div class="qt-stat-box">
+                                <span class="qt-stat-num">{primaryCurrency} {subtotalFmt}</span>
+                                <span class="qt-stat-lbl">SUB TOTAL</span>
+                            </div>
+                            <div class="qt-stat-divider"></div>
+                            <div class="qt-stat-box">
+                                <span class="qt-stat-num">{primaryCurrency} {grandTotalFmt}</span>
+                                <span class="qt-stat-lbl">GRAND TOTAL</span>
+                            </div>
+                        </div>
+
+                        <template if:true={hasItems}>
+                            <div class="qt-popup-items-list">
+                                <template for:each={lineItems} for:item="li">
+                                    <div key={li.id} class={li.popupCardClass}>
+                                        <template if:true={showGroupCheckbox}>
+                                            <lightning-input type="checkbox" checked={li.isSelectedForGroup} onchange={toggleSelectedForGroup} data-id={li.id} class="item-highlight-chk" title="Select for this Group"></lightning-input>
+                                        </template>
+                                        <div class="pli-left">
+                                            <div class="pli-num">{li.itemNumber}</div>
+                                            <template if:true={li.imageDataUrl}>
+                                                <img src={li.imageDataUrl} class="pli-img" alt="product" />
+                                            </template>
+                                            <template if:false={li.imageDataUrl}>
+                                                <div class="pli-img-ph">📦</div>
+                                            </template>
+                                        </div>
+                                        <div class="pli-mid">
+                                            <div class="pli-name">{li.productName}</div>
+                                            <template if:true={li.modelNumber}>
+                                                <div class="pli-hsn">Model No: {li.modelNumber}</div>
+                                            </template>
+                                            <div class="pli-meta">
+                                                <span>Qty: {li.qtyDisplay}</span>
+                                                <span class="pli-dot">•</span>
+                                                <span>GST: {li.gst}%</span>
+                                                <template if:true={li.hasDiscount}>
+                                                    <span class="pli-dot">•</span>
+                                                    <span>Disc: {li.discount}%</span>
+                                                </template>
+                                            </div>
+                                        </div>
+                                        <div class="pli-right">
+                                            <div class="pli-price">{li.sym} {li.unitPriceFmt}</div>
+                                            <div class="pli-total">Total: {li.sym} {li.itemTotalFmt}</div>
+                                            <div class="pli-actions">
+                                                <button class="pli-edit-btn" data-id={li.id} onclick={openEditForItem}>✏️ Edit</button>
+                                                <button class="pli-del-btn" data-id={li.id} onclick={removeItem}>🗑</button>
+                                            </div>
+                                        </div>
+                                        <template if:true={li.isHighlighted}>
+                                            <div class="pli-hl-strip">⭐</div>
+                                        </template>
+                                    </div>
+                                </template>
+                            </div>
+                        </template>
+
+                        <template if:false={hasItems}>
+                            <div class="qt-empty-items">
+                                📦 No items yet — click "+ Add New Item" to begin
+                            </div>
+                        </template>
+                    </div>
+
+                    <div class="qt-modal-ft">
+                        <button class="qt-btn qt-btn-outline-dark" onclick={goBackWithoutSave}>← Back</button>
+                        <div class="qt-modal-ft-right">
+                            <button class="qt-btn qt-btn-outline-dark" onclick={closeItemsPopup}>Save &amp; Back</button>
+                        </div>
+                    </div>
+                </template>
+
+                <!-- Item Edit View -->
+                <template if:true={isEditingItem}>
+                    <div class="qt-modal-bd qt-item-edit-bd">
+
+                        <!-- Edit header with navigation -->
+                        <div class="qt-edit-nav">
+                            <div class="qt-edit-nav-info">
+                                <span class="qt-edit-nav-icon">✏️</span>
+                                <span class="qt-edit-nav-title">Editing Item #{currentEditItem.itemNumber}</span>
+                                <span class="qt-edit-nav-sub">of {lineItems.length}</span>
+                            </div>
+                            <div class="qt-edit-nav-dots">
+                                <template for:each={lineItems} for:item="li">
+                                    <div key={li.id} class={li.navDotClass}></div>
+                                </template>
+                            </div>
+                        </div>
+
+                        <!-- Highlight toggle -->
+                        <div class="qt-hl-toggle-row">
+                            <label class="qt-hl-toggle">
+                                <input type="checkbox" checked={currentEditItem.isHighlighted} onchange={toggleCurrentHighlight} />
+                                <span>⭐ Mark as Highlighted Item</span>
+                            </label>
+                        </div>
+
+                        <!-- ★ NEW: Group assignment dropdown -->
+                        <div class="qt-field" style="margin-bottom:12px">
+                            <label>📁 Group / Section</label>
+                            <select onchange={handleItemGroupChange}>
+                                <option value="">— standalone Products—</option>
+                                <template for:each={groups} for:item="grp">
+                                    <option key={grp.id} value={grp.id} selected={grp.isActive}>
+                                        {grp.headerName}
+                                    </option>
+                                </template>
+                            </select>
+                            <span class="qt-field-hint">Assign this item to a group header in the PDF.</span>
+                        </div>
+
+                        <!-- Product Name & HSN -->
+                        <div class="qt-grid-3" style="margin-bottom:12px">
+                            <div class="qt-field qt-span2">
+                                <label>Product Name *</label>
+                                <input type="text" value={currentEditItem.productName} data-fld="productName" onchange={currentItemChange} placeholder="e.g. MS CD 211S FLP" />
+                            </div>
+                            <div class="qt-field">
+                                <label>HSN/SAC</label>
+                                <input type="text" value={currentEditItem.hsnCode} data-fld="hsnCode" onchange={currentItemChange} placeholder="90268090" />
+                            </div>
+                        </div>
+                        <div class="qt-field" style="margin-bottom:12px">
+                            <label>Model Number</label>
+                            <input type="text" value={currentEditItem.modelNumber} data-fld="modelNumber" onchange={currentItemChange} disabled placeholder=" " />
+                        </div>
+
+                        <!-- Description -->
+                        <div class="qt-field" style="margin-bottom:12px">
+                            <label>Description</label>
+                            <lightning-input-rich-text value={currentEditItem.description} data-fld="description" onchange={currentItemChange} placeholder="Microprocessor based design, Range: 0 to 30 mS/cm...">
+                            </lightning-input-rich-text>
+                        </div>
+
+                        <!-- Qty, Unit, Currency, Unit Price -->
+                        <div class="qt-grid-4" style="margin-bottom:12px">
+                            <div class="qt-field">
+                                <label>Quantity</label>
+                                <input type="number" value={currentEditItem.quantity} data-fld="quantity" onchange={currentItemChange} min="0.001" step="any" />
+                            </div>
+                            <div class="qt-field">
+                                <label>Unit</label>
+                                <input type="text" value={currentEditItem.unit} data-fld="unit" onchange={currentItemChange} placeholder="Nos" />
+                            </div>
+                            <div class="qt-field">
+                                <label>Currency</label>
+                                <select data-fld="currency" onchange={currentItemChange} disabled>
+                                    <option value="₹" selected={currentEditItem.isINR}>₹ INR</option>
+                                    <option value="$" selected={currentEditItem.isUSD}>$ USD</option>
+                                </select>
+                            </div>
+                            <div class="qt-field">
+                                <label>List Price</label>
+                                <input type="number" value={currentEditItem.unitPrice} data-fld="unitPrice" onchange={currentItemChange} min="0" step="0.01" />
+                            </div>
+                        </div>
+
+                        <!-- Discount, GST, Computed totals -->
+                        <div class="qt-grid-5" style="margin-bottom:12px">
+                            <div class="qt-field">
+                                <label>Discount %</label>
+                                <input type="number" value={currentEditItem.discount} data-fld="discount" onchange={currentItemChange} min="0" max="100" step="0.01" />
+                            </div>
+                            <div class="qt-field">
+                                <label>GST %</label>
+                                <input type="number" value={currentEditItem.gst} data-fld="gst" onchange={currentItemChange} min="0" max="28" step="0.5" />
+                            </div>
+                            <!-- <div class="qt-computed">
+                                <span class="qt-comp-label">Line Total</span>
+                                <span class="qt-comp-val">{currentEditItem.sym} {currentEditItem.lineTotalFmt}</span>
+                            </div> -->
+                            <!-- <div class="qt-computed">
+                                <span class="qt-comp-label">GST Amt</span>
+                                <span class="qt-comp-val">{currentEditItem.sym} {currentEditItem.gstAmtFmt}</span>
+                            </div>
+                            <div class="qt-computed qt-computed-hl">
+                                <span class="qt-comp-label">Item Total</span>
+                                <span class="qt-comp-val qt-comp-total">{currentEditItem.sym} {currentEditItem.itemTotalFmt}</span>
+                            </div> -->
+                            <div class="qt-computed">
+                                <div class="qt-comp-label">SUBTOTAL PRICE</div>
+                                <div class="qt-comp-val">
+                                    {currentEditItem.sym} {currentEditItem.subtotalFmt}
+                                </div>
+                            </div>
+
+                            <div class="qt-computed qt-computed-hl">
+                                <div class="qt-comp-label">TOTAL PRICE</div>
+                                <div class="qt-comp-val qt-comp-total">
+                                    {currentEditItem.sym} {currentEditItem.totalPriceFmt}
+                                </div>
+                            </div>
+
+                        </div>
+                        <c-preview-file-thumbnails record-id={currentEditItem.id}></c-preview-file-thumbnails>
+
+                    </div>
+
+                    <!-- Footer: item edit view -->
+                    <div class="qt-modal-ft qt-edit-footer">
+                        <button class="qt-btn qt-btn-outline-dark" onclick={goBackToItemsList}>← Back</button>
+                        <div class="qt-modal-ft-right">
+                            <button class="qt-btn qt-btn-outline-dark" onclick={saveAndBack}>💾 Save &amp; Back</button>
+                            <template if:false={isLastItem}>
+                                <button class="qt-btn qt-btn-primary" onclick={saveAndNext}>Save &amp; Next →</button>
+                            </template>
+                            <template if:true={isLastItem}>
+                                <button class="qt-btn qt-btn-success" onclick={saveAndDone}>✅ Save &amp; Done</button>
+                            </template>
+                        </div>
+                    </div>
+                </template>
+
+            </div>
+        </template>
+
+
+        <!-- EMAIL MODAL -->
+        <template if:true={showEmailModal}>
+            <div class="qt-modal-backdrop" onclick={closeEmailModal}></div>
+            <div class="qt-modal qt-email-modal">
+                <div class="qt-modal-hd">
+                    <span>📧 Send Quotation Email</span>
+                    <button class="qt-modal-close" onclick={closeEmailModal}>✕</button>
+                </div>
+                <div class="qt-modal-bd">
+                    <div class="qt-field">
+                        <label>From</label>
+                        <input type="text" value={emailFrom} disabled />
+                    </div>
+                    <div class="qt-field">
+                        <label>To *</label>
+                        <!-- ★ value DB se aayega, user edit bhi kar sakta hai -->
+                        <input type="text" value={emailTo} onchange={f_emailTo} placeholder="email1@company.com" />
+                    </div>
+                    <div class="qt-field">
+                        <label>CC (comma-separated)</label>
+                        <!-- ★ DB se Email_CC__c -->
+                        <input type="text" value={emailCC} onchange={f_emailCC} placeholder="cc1@company.com, cc2@company.com" />
+                    </div>
+                    <div class="qt-field">
+                        <label>BCC (comma-separated)</label>
+                        <!-- ★ DB se Email_BCC__c -->
+                        <input type="text" value={emailBCC} onchange={f_emailBCC} placeholder="bcc1@company.com, bcc2@company.com" />
+                    </div>
+                    <div class="qt-field">
+                        <label>Subject</label>
+                        <input type="text" value={emailSubject} onchange={f_emailSubject} />
+                    </div>
+                    <div class="qt-field">
+                        <label>Email Body</label>
+                        <lightning-input-rich-text value={emailBody} onchange={f_emailBody}>
+                        </lightning-input-rich-text>
+                    </div>
+                </div>
+                <div class="qt-modal-ft">
+                    <button class="qt-btn qt-btn-outline" onclick={closeEmailModal}>Cancel</button>
+                    <button class="qt-btn qt-btn-primary" onclick={handleSaveAndEmail} disabled={isSending}>
+                        <template if:true={isSending}>⏳ Sending…</template>
+                        <template if:false={isSending}>📧 Save &amp; Send</template>
+                    </button>
+                </div>
+            </div>
+        </template>
+
+        <!-- ══════════════════════════════════════════
+             DOWNLOAD MODAL
+        ══════════════════════════════════════════ -->
+        <!-- <template if:true={showDownloadOptions}>
+            <div class="qt-modal-backdrop"></div>
+
+            <div class="qt-modal qt-download-modal">
+
+               
+                <div class="qt-modal-hd">
+                    <span>📄 Download Quotation</span>
+                    <button class="qt-modal-close" onclick={closeDownloadModal}>✖</button>
+                </div>
+
+                
+                <div class="qt-modal-bd download-body">
+
+                    <p class="download-title">
+                        Choose where you want to save your PDF
+                    </p>
+
+                    <div class="download-options">
+
+                  
+                        <div class="download-card" onclick={downloadInSystem}>
+                            <div class="icon">💻</div>
+                            <div>
+                                <div class="title">Download to System</div>
+                                <div class="desc">Save directly to your computer</div>
+                            </div>
+                        </div>
+
+                        
+                        <div class="download-card" onclick={downloadInSalesforce}>
+                            <div class="icon">☁️</div>
+                            <div>
+                                <div class="title">Save to Salesforce</div>
+                                <div class="desc">Store in Salesforce Files</div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+              
+                <div class="qt-modal-ft">
+                    <button class="qt-btn-outline-dark" onclick={closeDownloadModal}>
+                        Cancel
+                    </button>
+                </div>
+
+            </div>
+        </template> -->
+
+        <!-- ══════════════════════════════════════════
+             TOAST
+        ══════════════════════════════════════════ -->
+        <template if:true={showToast}>
+            <div class={toastCls}>
+                <span class="qt-toast-ico">{toastIco}</span>
+                <span class="qt-toast-msg">{toastMsg}</span>
+            </div>
+        </template>
+    </div><!-- qt-shell -->
+    <template if:true={showDeleteModal}>
+
+        <div class="qt-modal-backdrop"></div>
+
+        <div class="qt-delete-modal">
+
+            <div class="qt-delete-title">
+                Delete Confirmation
+            </div>
+
+            <div class="qt-delete-body">
+                {deleteMessage}
+            </div>
+
+            <div class="qt-delete-footer">
+
+                <button class="qt-btn qt-btn-outline" onclick={closeDeleteModal}>
+
+                    Cancel
+
+                </button>
+
+                <button class="qt-btn qt-btn-danger" onclick={confirmDelete}>
+
+                    Delete
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </template>
+</template>
